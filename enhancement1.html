@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhancement One: Software Design - CS 499 ePortfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="code-review.html">Code Review</a></li>
+            <li><a href="enhancement1.html" class="active">Software Design</a></li>
+            <li><a href="enhancement2.html">Algorithms</a></li>
+            <li><a href="enhancement3.html">Databases</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Enhancement One: Software Design and Engineering</h1>
+            <p>WeightAppUI Android Application</p>
+        </div>
+
+        <div class="artifact-links">
+            <h3>Artifact Downloads</h3>
+            <ul>
+                <li><a href="artifacts/WeightAppUI_Original.zip">Download Original WeightAppUI</a></li>
+                <li><a href="artifacts/WeightAppUI_Enhanced.zip">Download Enhanced WeightAppUI</a></li>
+            </ul>
+        </div>
+
+        <h2>Artifact Description</h2>
+        <p>The artifact I selected for this enhancement is the WeightAppUI Android application, originally developed during CS 360: Mobile Architecture and Programming. I created this project in 2024 as a comprehensive weight tracking mobile application. The app allows users to create accounts, log daily weight measurements, set goal weights, and receive SMS notifications when they reach their fitness goals. The application uses SQLite for local data persistence and follows the Android fragment-based navigation pattern with a RecyclerView for displaying weight entries.</p>
+        <p>The original implementation provided core functionality but lacked several important security and software engineering best practices. Passwords were stored in plain text in the SQLite database, input validation was minimal, error handling was basic, and code documentation was sparse.</p>
+
+        <h2>Justification for Inclusion</h2>
+        <p>I selected this artifact for my ePortfolio because it demonstrates my ability to identify security vulnerabilities in existing code and implement industry-standard solutions. The enhancements showcase several important skills:</p>
+        <p>First, I implemented bcrypt password hashing to replace the plain text password storage. The bcrypt algorithm with a work factor of 12 provides strong protection against brute force attacks while maintaining acceptable performance on mobile devices. I chose bcrypt specifically because it includes automatic salt generation and uses a computationally expensive hashing function designed to remain resistant to hardware improvements over time.</p>
+        <p>Second, I added comprehensive input validation throughout the application. The login screen now enforces password complexity requirements including minimum length, uppercase letters, lowercase letters, digits, and special characters. Username validation ensures proper format and length constraints. The weight entry screen validates date formats using strict parsing to prevent invalid calendar dates, and weight values must fall within reasonable ranges.</p>
+        <p>Third, I improved error handling by wrapping database operations in try-catch blocks and providing user-friendly error messages instead of allowing the app to crash or fail silently. This defensive programming approach improves both security and user experience.</p>
+        <p>Fourth, I added thorough documentation throughout the codebase. Each class now includes a header comment explaining its purpose and the enhancements made. Methods include Javadoc-style comments describing parameters, return values, and security considerations.</p>
+
+        <h2>Course Outcomes</h2>
+        <p>This enhancement directly addresses two course outcomes:</p>
+        <p><strong>Outcome 4:</strong> Demonstrate an ability to use well-founded and innovative techniques, skills, and tools in computing practices for the purpose of implementing computer solutions that deliver value and accomplish industry-specific goals. I met this outcome by implementing bcrypt password hashing using the jBCrypt library, a widely recognized industry-standard tool for secure password storage. I also applied defensive programming techniques through comprehensive input validation and error handling.</p>
+        <p><strong>Outcome 5:</strong> Develop a security mindset that anticipates adversarial exploits in software architecture and designs to expose potential vulnerabilities, mitigate design flaws, and ensure privacy and enhanced security of data and resources. I met this outcome by identifying and addressing the plain text password vulnerability. By hashing passwords with bcrypt, even a database breach would not directly expose user passwords. The input validation I added also prevents potential injection attacks and ensures data integrity.</p>
+
+        <h2>Reflection on the Enhancement Process</h2>
+        <p>Working through this enhancement taught me several valuable lessons about software security and the realities of modifying existing code.</p>
+        <p>One challenge I faced was handling the database version upgrade for existing users. When I changed from plain text to hashed passwords, any existing accounts with plain text passwords would fail verification because bcrypt would throw an exception when trying to verify a plain text string against its hash format. I addressed this by incrementing the database version and adding logging to warn about the migration.</p>
+        <p>I also learned about the importance of choosing appropriate security parameters. For bcrypt, selecting the work factor required balancing security against performance. A work factor of 12 means the hash computation takes approximately 250 milliseconds on modern hardware, which is imperceptible to users during login but would significantly slow down brute force attacks.</p>
+        <p>The input validation implementation reinforced my understanding of defense in depth. Even though bcrypt would handle empty or null password inputs, I added explicit validation at the UI layer to provide immediate feedback to users and reduce unnecessary processing. This layered approach means that even if one validation mechanism fails, others remain in place.</p>
+    </div>
+
+    <footer>
+        <p>Muhiz Bada | CS 499 Computer Science Capstone | Southern New Hampshire University</p>
+    </footer>
+</body>
+</html>

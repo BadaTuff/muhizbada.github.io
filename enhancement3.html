@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhancement Three: Databases - CS 499 ePortfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="code-review.html">Code Review</a></li>
+            <li><a href="enhancement1.html">Software Design</a></li>
+            <li><a href="enhancement2.html">Algorithms</a></li>
+            <li><a href="enhancement3.html" class="active">Databases</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Enhancement Three: Databases</h1>
+            <p>Travlr Getaways Full-Stack Web Application</p>
+        </div>
+
+        <div class="artifact-links">
+            <h3>Artifact Downloads</h3>
+            <ul>
+                <li><a href="artifacts/TravlrGetaways_Original.zip">Download Original Travlr Getaways</a></li>
+                <li><a href="artifacts/TravlrGetaways_Enhanced.zip">Download Enhanced Travlr Getaways</a></li>
+            </ul>
+        </div>
+
+        <h2>Artifact Description</h2>
+        <p>The artifact I selected for the databases category is Travlr Getaways, a full-stack web application originally developed in CS 465 Full Stack Development I during the Fall 2024 term. Travlr Getaways is a travel booking platform built using the MEAN stack architecture: MongoDB serves as the document database, Express.js provides the server framework, Angular powers the administrative single-page application, and Node.js acts as the runtime environment.</p>
+        <p>The original application included fundamental features such as CRUD operations for trip management, user authentication using JSON Web Tokens, and a separation between the public-facing customer website and the protected administrative dashboard. While fully functional for its original coursework requirements, the database implementation lacked optimization features necessary for scaling to production use with larger datasets and more demanding query patterns.</p>
+
+        <h2>Justification for Inclusion</h2>
+        <p>I selected Travlr Getaways for the databases enhancement because it presented authentic opportunities to demonstrate advanced MongoDB concepts while solving real performance and usability challenges.</p>
+
+        <h3>Pagination</h3>
+        <p>The original implementation retrieved all trips from the database in a single query, which would cause performance degradation as the collection grows. I implemented skip/limit pagination with a reusable utility module that validates input parameters, calculates skip offsets, enforces a maximum page size of 100 items to prevent resource exhaustion, and generates metadata including total pages, current page, and navigation flags.</p>
+
+        <h3>Strategic Database Indexing</h3>
+        <p>I analyzed query patterns and added strategic indexes: a single-field index on name for text searches, a single-field index on price for filtering and sorting, a compound index on price and nights for combined queries, a descending index on createdOn for chronological sorting, and a text index on name and summary for full-text search. Each index includes documentation explaining the performance improvement from O(n) collection scans to O(log n) index lookups.</p>
+
+        <h3>Aggregation Pipelines</h3>
+        <p>I developed four MongoDB aggregation pipelines for analytics. The summary endpoint calculates total trip count, average price, min/max prices, price range, and average duration. The price-ranges endpoint uses bucket aggregation to categorize trips into price brackets. The duration endpoint groups trips by length category. The monthly endpoint analyzes trip creation patterns over time. All statistics are computed server-side within the database engine rather than fetching documents to the application layer.</p>
+
+        <h3>Full-Text Search and Advanced Filtering</h3>
+        <p>I implemented full-text search leveraging the text index to find trips by keyword with relevance scoring. I also added an advanced filtering endpoint supporting combined price range and nights range queries using the compound index for efficient execution.</p>
+
+        <h2>Course Outcomes</h2>
+        <p><strong>Outcome 3:</strong> Design and evaluate computing solutions using algorithmic principles while managing trade-offs. The pagination documents that skip/limit has O(skip + limit) complexity, acceptable for the expected dataset size. The indexing strategy documents B-tree O(log n) lookups versus O(n) collection scans, acknowledging write overhead. The aggregation pipelines document that O(n) processing is unavoidable for aggregates but eliminates network transfer costs.</p>
+        <p><strong>Outcome 4:</strong> Demonstrate ability to use well-founded techniques and tools. The enhancement uses MongoDB best practices for indexing, standard aggregation operators ($group, $bucket, $project, $sort), the widely-adopted skip/limit pagination pattern, RESTful API conventions, and proper separation of concerns with a dedicated pagination utility module.</p>
+        <p><strong>Outcome 5:</strong> Develop a security mindset that anticipates adversarial exploits. Security is integrated throughout: pagination validates and sanitizes input with a max page size of 100 to prevent DoS attacks, sorting uses a whitelist of allowed fields to prevent injection, search validates query length, text indexes include only non-sensitive fields, all write operations require JWT authentication, and error messages avoid leaking implementation details.</p>
+
+        <h2>Reflection on the Enhancement Process</h2>
+        <p>The most significant insight was understanding the importance of testing alongside implementation. Testing pagination confirmed metadata calculations were correct. Testing analytics endpoints verified aggregation pipeline stages processed data in the expected order. This hands-on verification gave me confidence that the enhancements work correctly in practice, not just in theory.</p>
+        <p>I gained deeper appreciation for how indexing decisions require understanding of actual query patterns. Each index consumes storage and adds write overhead. The compound index on price and nights demonstrates this: field order matters because MongoDB can use it for queries on price alone or both fields, but not nights alone.</p>
+        <p>One challenge was ensuring new analytics endpoints integrated cleanly with the existing route structure. Express route matching is order-dependent, so routes like /trips/search and /trips/analytics/summary needed to be defined before the parameterized route /trips/:tripCode. This required careful attention to route ordering.</p>
+        <p>The enhancement process highlighted the value of reusable utility modules. The pagination utility can be used across any endpoint, promoting code reuse and ensuring consistent behavior throughout the API.</p>
+    </div>
+
+    <footer>
+        <p>Muhiz Bada | CS 499 Computer Science Capstone | Southern New Hampshire University</p>
+    </footer>
+</body>
+</html>

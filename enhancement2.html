@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhancement Two: Algorithms - CS 499 ePortfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="code-review.html">Code Review</a></li>
+            <li><a href="enhancement1.html">Software Design</a></li>
+            <li><a href="enhancement2.html" class="active">Algorithms</a></li>
+            <li><a href="enhancement3.html">Databases</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Enhancement Two: Algorithms and Data Structures</h1>
+            <p>WeightAppUI Android Application</p>
+        </div>
+
+        <div class="artifact-links">
+            <h3>Artifact Downloads</h3>
+            <ul>
+                <li><a href="artifacts/WeightAppUI_Original.zip">Download Original WeightAppUI</a></li>
+                <li><a href="artifacts/WeightAppUI_Enhanced.zip">Download Enhanced WeightAppUI</a></li>
+            </ul>
+        </div>
+
+        <h2>Artifact Description</h2>
+        <p>The artifact selected for this enhancement is the WeightAppUI Android application, originally developed in CS 360: Mobile Architecture and Programming. This mobile application serves as a personal weight tracking tool that allows users to log daily weight measurements, set goal weights, and receive SMS notifications when goals are achieved.</p>
+        <p>The original application included fundamental features such as user authentication with SQLite database storage, a RecyclerView-based grid display of weight entries, CRUD operations for weight data, and goal-triggered SMS notifications. While functional, the original implementation used a simple ArrayList for data storage with basic linear operations for all data access patterns.</p>
+
+        <h2>Justification for Inclusion</h2>
+        <p>I selected this artifact for the algorithms and data structures enhancement because it presented genuine opportunities to apply computer science fundamentals to solve real performance and usability challenges. The enhancements demonstrate several key competencies:</p>
+
+        <h3>1. Data Structure Optimization (HashMap Integration)</h3>
+        <p>The original implementation relied solely on an ArrayList for storing weight entries, resulting in O(n) time complexity for ID-based lookups during edit and delete operations. By implementing a dual data structure approach combining ArrayList (for O(1) positional access needed by RecyclerView) with HashMap (for O(1) average lookup by ID), I demonstrated understanding of how different data structures offer different performance characteristics and how to leverage multiple structures to achieve optimal performance across varied access patterns.</p>
+        <p>The ArrayList maintains insertion order and provides constant-time index access required by the RecyclerView adapter, while the HashMap eliminates the linear search previously needed when users tap to edit or delete specific entries. For a user tracking weight daily over a year (365 entries), this reduces lookup operations from approximately 365 comparisons to essentially 1 comparison on average.</p>
+
+        <h3>2. Sorting Algorithms (Comparator Pattern)</h3>
+        <p>I implemented multiple sorting options using the Comparator design pattern with Java's built-in TimSort algorithm. Users can now sort entries by date (ascending/descending) or weight (ascending/descending). This demonstrates understanding of the Comparator pattern for flexible, interchangeable sorting strategies, time complexity analysis (O(n log n) for comparison-based sorting), and trade-offs between immediate user feedback and computational cost.</p>
+
+        <h3>3. Filtering Algorithms (Predicate-Based Filtering)</h3>
+        <p>The filtering system allows users to view subsets of their data by date range and weight range. This feature uses linear scan with predicate evaluation, demonstrating algorithm design for real-world data querying needs, combined filter criteria using logical conjunction, and time complexity considerations (O(n) for filtering plus O(n log n) for re-sorting).</p>
+
+        <h3>4. Statistical Analysis Algorithms</h3>
+        <p>The statistics module calculates average, minimum, maximum, range, weight change over time, and moving averages. Each algorithm includes documented time complexity: Average/Min/Max/Range use O(n) single-pass algorithms, Weight Change requires O(n log n) due to sorting requirement, and Moving Average runs in O(n log n + n*w) where w is the window size. These features transform the app from a simple data entry tool into an analytical platform.</p>
+
+        <h2>Course Outcomes</h2>
+        <p><strong>Outcome 3:</strong> Design and evaluate computing solutions that solve a given problem using algorithmic principles and computer science practices and standards appropriate to its solution, while managing the trade-offs involved in design choices. The enhancement meets this outcome through documented trade-off analysis for every significant algorithmic decision, Big-O time complexity documentation for all major algorithms, and the application of the Comparator design pattern for maintainable, extensible sorting functionality.</p>
+        <p><strong>Outcome 4:</strong> Demonstrate an ability to use well-founded and innovative techniques, skills, and tools for implementing database solutions. The implementation uses industry-standard Android development practices including RecyclerView adapter patterns, proper separation of concerns, and Android UI best practices with collapsible panels for progressive disclosure.</p>
+
+        <h2>Reflection on the Enhancement Process</h2>
+        <p>The most significant challenge was managing the interaction between the filtered/sorted display list and the master data list. When a user edits or deletes an entry while filters are active, the position in the display list differs from the position in the master list. The solution was to use the HashMap for ID-based operations (which bypasses position entirely) and to refresh the display list after any modification.</p>
+        <p>Another challenge was ensuring that statistics remained accurate and performant. I implemented lazy evaluation where statistics only update when the statistics panel is visible, demonstrating practical application of the "don't compute until needed" principle.</p>
+        <p>This project deepened my understanding of how data structure choices ripple through an entire codebase. The decision to add HashMap support required changes not just to the data storage layer, but also to how the Fragment handles user interactions and how the adapter manages the display list. The enhancement process also highlighted the value of incremental development: by implementing sorting, filtering, and statistics as separate but interoperable features, I could test each component independently before integrating them into the complete solution.</p>
+    </div>
+
+    <footer>
+        <p>Muhiz Bada | CS 499 Computer Science Capstone | Southern New Hampshire University</p>
+    </footer>
+</body>
+</html>
